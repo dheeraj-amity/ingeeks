@@ -3,10 +3,22 @@ import type { Metadata } from 'next';
 import { ReactNode } from 'react';
 import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 export const metadata: Metadata = {
   title: 'InGeeks Technologies | Innovating Ideas, Building Futures',
   description: 'Premium AI, Web & Mobile solutions.',
+  openGraph: {
+    title: 'InGeeks Technologies',
+    description: 'Premium AI, Web & Mobile solutions.',
+    images: [{ url: '/og?title=InGeeks%20Technologies', width:1200, height:630, alt:'InGeeks Technologies'}]
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'InGeeks Technologies',
+    description: 'Premium AI, Web & Mobile solutions.',
+    images: ['/og?title=InGeeks%20Technologies']
+  }
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
@@ -21,6 +33,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           </div>
           <Footer />
         </div>
+        <SpeedInsights />
       </body>
     </html>
   );

@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from 'react';
-let Player: any = null;
+import type { Player as LottiePlayer } from '@lottiefiles/react-lottie-player';
+let Player: typeof LottiePlayer | null = null;
 
 export function SocialIcons(){
   const [ready,setReady] = useState(false);
@@ -12,8 +13,8 @@ export function SocialIcons(){
     })();
   },[]);
   const items = [
-    { href:'https://github.com', label:'GitHub', lottie:'https://assets2.lottiefiles.com/packages/lf20_j1adxtyb.json' },
-    { href:'https://www.linkedin.com', label:'LinkedIn', lottie:'https://assets2.lottiefiles.com/packages/lf20_0Cm1Y2.json' },
+    { href:'https://github.com/dheeraj-amity', label:'GitHub', lottie:'https://assets2.lottiefiles.com/packages/lf20_j1adxtyb.json' },
+    { href:'https://www.linkedin.com/in/mr-dheerajmaurya/', label:'LinkedIn', lottie:'https://assets2.lottiefiles.com/packages/lf20_0Cm1Y2.json' },
     { href:'mailto:dheeraj@ingeeks.in', label:'Email', lottie:'https://assets2.lottiefiles.com/packages/lf20_tpa51dr0.json' },
   ];
   return (
@@ -29,3 +30,5 @@ export function SocialIcons(){
     </div>
   );
 }
+
+export default SocialIcons;

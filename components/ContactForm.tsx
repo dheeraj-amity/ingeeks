@@ -23,7 +23,7 @@ export function ContactForm(){
       if(!res.ok) throw new Error('Failed');
       setStatus('success');
       form.reset();
-    }catch(err){
+    }catch{
       setStatus('error');
       setMessage('Something went wrong. Try again.');
     }

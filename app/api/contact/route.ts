@@ -21,7 +21,7 @@ export async function POST(request: Request){
     console.log('CONTACT_FORM', { name, email, message });
 
     return NextResponse.json({ ok:true });
-  } catch (e) {
+  } catch {
     return NextResponse.json({ error: 'Server error'}, { status:500 });
   }
 }

@@ -1,6 +1,5 @@
 import dynamic from 'next/dynamic';
-
-const SocialIcons = dynamic(() => import('./SocialIcons').then(m=>m.SocialIcons), { ssr:false });
+const SocialIcons = dynamic(() => import('@/components/SocialIcons'), { ssr:false });
 
 export function Footer(){
   return (

@@ -16,20 +16,23 @@ export default function ProjectsPage(){
         <h1 className="font-heading text-4xl font-bold tracking-wide mb-10">Finished Projects</h1>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {finishedProjects.map(p=> {
-            const href = p.link ? p.link : `/projects/${slugify(p.title)}`;
-            const external = Boolean(p.link);
-            const Tag: any = 'a';
+            const internal = !p.link;
+            const href = internal ? `/projects/${slugify(p.title)}` : p.link!;
+            if(internal){
+              return (
+                <Link key={p.title} href={href} className="group rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-6 hover:border-brand-accent/50 transition focus:outline-none focus:ring-2 focus:ring-brand-accent/40">
+                  <h3 className="font-heading text-lg font-semibold tracking-wide mb-2 group-hover:text-white">{p.title}</h3>
+                  <p className="text-sm text-slate-400 leading-relaxed">{p.desc}</p>
+                  <span className="mt-3 inline-block text-[11px] font-semibold tracking-wide text-brand-accent/60 group-hover:text-brand-accent">Details →</span>
+                </Link>
+              );
+            }
             return (
-              <Tag
-                key={p.title}
-                href={href}
-                {...(external ? { target:'_blank', rel:'noopener noreferrer'}: {})}
-                className="group rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-6 hover:border-brand-accent/50 transition focus:outline-none focus:ring-2 focus:ring-brand-accent/40"
-              >
+              <a key={p.title} href={href} target="_blank" rel="noopener noreferrer" className="group rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-6 hover:border-brand-accent/50 transition focus:outline-none focus:ring-2 focus:ring-brand-accent/40">
                 <h3 className="font-heading text-lg font-semibold tracking-wide mb-2 group-hover:text-white">{p.title}</h3>
                 <p className="text-sm text-slate-400 leading-relaxed">{p.desc}</p>
-                {external ? <span className="mt-3 inline-block text-[11px] font-semibold tracking-wide text-brand-accent/80">Visit ↗</span> : <span className="mt-3 inline-block text-[11px] font-semibold tracking-wide text-brand-accent/60 group-hover:text-brand-accent">Details →</span>}
-              </Tag>
+                <span className="mt-3 inline-block text:[11px] font-semibold tracking-wide text-brand-accent/80">Visit ↗</span>
+              </a>
             );
           })}
         </div>

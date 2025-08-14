@@ -5,7 +5,7 @@ export function ThreeHeroBackground(){
   const ref = useRef<HTMLDivElement>(null);
   useEffect(()=>{
     let cleanup: (()=>void)|undefined;
-    (async ()=>{
+    const init = async ()=>{
       const THREE = await import('three');
       if(!ref.current) return;
       const container = ref.current;
@@ -36,13 +36,14 @@ export function ThreeHeroBackground(){
       const onPointerMove = (e: PointerEvent)=>{ mouse.x = (e.clientX / window.innerWidth) * 2 - 1; mouse.y = -(e.clientY / window.innerHeight) * 2 + 1; };
       window.addEventListener('pointermove', onPointerMove);
       let frame = 0; let raf:number;
-      const animate = ()=>{ frame += 0.004; group.rotation.y += 0.0008; group.rotation.x = Math.sin(frame*0.6)*0.15; group.position.x += (mouse.x*4 - group.position.x) * 0.02; group.position.y += (mouse.y*2 - group.position.y) * 0.02; renderer.render(scene, camera); raf = requestAnimationFrame(animate); };
+      const animate = ():void => { frame += 0.004; group.rotation.y += 0.0008; group.rotation.x = Math.sin(frame*0.6)*0.15; group.position.x += (mouse.x*4 - group.position.x) * 0.02; group.position.y += (mouse.y*2 - group.position.y) * 0.02; renderer.render(scene, camera); raf = requestAnimationFrame(animate); };
       animate();
       const onResize = ()=>{ if(!container) return; camera.aspect = container.clientWidth / container.clientHeight; camera.updateProjectionMatrix(); renderer.setSize(container.clientWidth, container.clientHeight); };
       window.addEventListener('resize', onResize);
       cleanup = ()=>{ window.removeEventListener('resize', onResize); window.removeEventListener('pointermove', onPointerMove); geometry.dispose(); material.dispose(); sphereGeo.dispose(); renderer.dispose(); cancelAnimationFrame(raf); if(container.contains(renderer.domElement)) container.removeChild(renderer.domElement); };
-    })();
-    return ()=>{ cleanup && cleanup(); };
+    };
+    init();
+    return ()=>{ if (cleanup) { cleanup(); } };
   },[]);
   return <div ref={ref} className="absolute inset-0 -z-10" aria-hidden="true" />;
 }
