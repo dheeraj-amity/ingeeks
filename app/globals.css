@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom global styles */
+html { scroll-behavior:smooth; }
+body { font-feature-settings: 'cv02','cv03','cv04','ss01'; }
+.container { @apply max-w-7xl mx-auto px-4; }
