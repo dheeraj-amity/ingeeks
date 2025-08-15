@@ -9,6 +9,7 @@ const nav = [
   { href: '/services', label: 'Services' },
   { href: '/projects', label: 'Projects' },
   { href: '/contact', label: 'Contact' },
+  { href: '/admin', label: 'Admin' },
 ];
 
 export function Header(){
