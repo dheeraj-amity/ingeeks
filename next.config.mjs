@@ -3,12 +3,11 @@ import withBundleAnalyzer from '@next/bundle-analyzer';
 
 const enableAnalyzer = process.env.ANALYZE === 'true';
 
+// Base config adjusted for GitHub Pages static export
 const base = {
-  // App Router is default; removed deprecated experimental.appDir flag
-  images: {
-    formats: ['image/avif','image/webp'],
-  }
+  output: 'export',
+  images: { unoptimized: true },
 };
 
-const nextConfig = enableAnalyzer ? withBundleAnalyzer({ enabled:true })(base) : base;
+const nextConfig = enableAnalyzer ? withBundleAnalyzer({ enabled: true })(base) : base;
 export default nextConfig;
