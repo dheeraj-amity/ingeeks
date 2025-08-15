@@ -9,6 +9,7 @@ import { AuthProvider } from '../components/AuthProvider';
 export const metadata: Metadata = {
   title: 'InGeeks Technologies | Innovating Ideas, Building Futures',
   description: 'Premium AI, Web & Mobile solutions.',
+  metadataBase: new URL('https://ingeeks.in'),
   openGraph: {
     title: 'InGeeks Technologies',
     description: 'Premium AI, Web & Mobile solutions.',
