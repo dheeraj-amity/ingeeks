@@ -10,7 +10,7 @@ export default function AdminDashboard(){
   if(!session) router.replace('/admin');
 
   return (
-    <div className="py-20 container">
+    <div className="py-16 container">
       <div className="flex items-center justify-between mb-12">
         <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
         <button onClick={()=>signOut({ callbackUrl:'/admin' })} className="text-sm px-4 py-2 rounded bg-slate-700 hover:bg-slate-600">Logout</button>

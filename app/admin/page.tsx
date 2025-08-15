@@ -1,16 +1,25 @@
 "use client";
 import { signIn } from 'next-auth/react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 
 export default function AdminLoginPage(){
   const params = useSearchParams();
   const router = useRouter();
   const callbackUrl = params.get('callbackUrl') || '/admin/dashboard';
+  const { data: session, status } = useSession();
   const [username,setUsername] = useState('');
   const [password,setPassword] = useState('');
   const [error,setError] = useState('');
   const [loading,setLoading] = useState(false);
+  const isAdmin = !!(session as any)?.role;
+
+  useEffect(()=> {
+    if(isAdmin) router.replace('/admin/dashboard');
+  },[isAdmin, router]);
+
+  if(isAdmin || status === 'loading') return null;
 
   async function handleSubmit(e: React.FormEvent){
     e.preventDefault();
@@ -23,8 +32,8 @@ export default function AdminLoginPage(){
   }
 
   return (
-    <div className="max-w-sm mx-auto py-24">
-      <h1 className="text-2xl font-bold mb-6">Admin Login</h1>
+    <div className="max-w-sm mx-auto py-32">
+      <h1 className="text-2xl font-bold mb-6 text-center">Admin Login</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium mb-1" htmlFor="username">Username</label>
