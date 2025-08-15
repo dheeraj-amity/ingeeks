@@ -2,14 +2,11 @@
   "name": "ingeeks-site-next",
   "private": true,
   "version": "0.1.0",
-  "homepage": "https://ingeeks.in",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "predeploy": "npm run build && echo ingeeks.in > out/CNAME",
-    "deploy": "gh-pages -d out"
+    "lint": "next lint"
   },
   "dependencies": {
     "@lottiefiles/react-lottie-player": "^3.6.0",

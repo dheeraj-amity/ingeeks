@@ -3,10 +3,10 @@ import withBundleAnalyzer from '@next/bundle-analyzer';
 
 const enableAnalyzer = process.env.ANALYZE === 'true';
 
-// Base config adjusted for GitHub Pages static export
 const base = {
-  output: 'export',
-  images: { unoptimized: true },
+  images: {
+    formats: ['image/avif','image/webp'],
+  },
 };
 
 const nextConfig = enableAnalyzer ? withBundleAnalyzer({ enabled: true })(base) : base;
