@@ -1,27 +1,19 @@
 "use client";
-import { useEffect, useState } from 'react';
+import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
 export default function AdminDashboard(){
   const router = useRouter();
-  const [ready,setReady] = useState(false);
-
-  useEffect(()=>{
-    const ok = typeof window !== 'undefined' && sessionStorage.getItem('ing_admin') === '1';
-    if(!ok){
-      router.replace('/admin');
-    } else {
-      setReady(true);
-    }
-  },[router]);
-
-  if(!ready) return null;
+  const { data: session, status } = useSession();
+  
+  if(status === 'loading') return null;
+  if(!session) router.replace('/admin');
 
   return (
     <div className="py-20 container">
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-        <button onClick={()=>{sessionStorage.removeItem('ing_admin'); router.push('/admin');}} className="text-sm px-4 py-2 rounded bg-slate-700 hover:bg-slate-600">Logout</button>
+        <button onClick={()=>signOut({ callbackUrl:'/admin' })} className="text-sm px-4 py-2 rounded bg-slate-700 hover:bg-slate-600">Logout</button>
       </div>
       <div className="grid gap-6 md:grid-cols-3">
         <div className="p-4 rounded-lg bg-slate-800 border border-slate-700">
