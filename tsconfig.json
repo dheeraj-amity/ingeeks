@@ -19,7 +19,8 @@
     "incremental": true,
     "types": [
       "next",
-      "node"
+      "node",
+      "./types/vercel-blob"
     ],
     "plugins": [
       {
