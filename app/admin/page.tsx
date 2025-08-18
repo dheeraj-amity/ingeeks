@@ -1,12 +1,14 @@
 "use client";
 import { signIn } from 'next-auth/react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSession } from 'next-auth/react';
 
 interface AdminSession { role?: string }
 
-export default function AdminLoginPage(){
+export const dynamic = 'force-dynamic';
+
+function LoginInner(){
   const params = useSearchParams();
   const router = useRouter();
   const callbackUrl = params.get('callbackUrl') || '/admin/dashboard';
@@ -49,5 +51,13 @@ export default function AdminLoginPage(){
         <button disabled={loading} type="submit" className="w-full bg-gradient-to-r from-brand-primary to-brand-accent text-[#0d1422] font-semibold py-2 rounded shadow hover:opacity-90 transition disabled:opacity-50">{loading? 'Signing in...':'Login'}</button>
       </form>
     </div>
+  );
+}
+
+export default function AdminLoginPage(){
+  return (
+    <Suspense fallback={<div className='py-32 text-center text-sm text-slate-400'>Loading...</div>}>
+      <LoginInner />
+    </Suspense>
   );
 }
