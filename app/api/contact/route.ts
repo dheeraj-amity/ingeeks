@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
+import { getToken } from 'next-auth/jwt';
+import { appendMessage, readMessages } from '@/lib/contactStore';
 
-// Simple in-memory rate limit placeholder
+// Simple in-memory rate limit placeholder (still memory-based)
 const recent = new Map<string, number>();
 
 export async function POST(request: Request){
@@ -17,11 +19,18 @@ export async function POST(request: Request){
     }
     recent.set(ip, now);
 
-    // Here you would send email / store in DB
-    console.log('CONTACT_FORM', { name, email, message });
+    const entry = { id: crypto.randomUUID(), name, email, message, createdAt: new Date().toISOString(), ip };
+    await appendMessage(entry);
 
     return NextResponse.json({ ok:true });
-  } catch {
+  } catch (e) {
     return NextResponse.json({ error: 'Server error'}, { status:500 });
   }
+}
+
+export async function GET(request: Request){
+  const token = await getToken({ req: request as any, secret: process.env.AUTH_SECRET });
+  if(!token) return NextResponse.json({ error: 'Unauthorized' }, { status:401 });
+  const messages = await readMessages();
+  return NextResponse.json({ messages });
 }
