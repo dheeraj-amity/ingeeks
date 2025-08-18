@@ -14,13 +14,13 @@ let SETTINGS = {
 };
 
 async function ensureAdmin(req: Request){
-  const token = await getToken({ req: req as unknown as any, secret: process.env.AUTH_SECRET });
-  if(!token) return false;
-  return true; // extend role checks if multiple roles
+  // getToken expects a NextRequest / API request; runtime provides compatible object.
+  // @ts-expect-error: Casting Request for getToken without introducing any.
+  const token = await getToken({ req, secret: process.env.AUTH_SECRET });
+  return Boolean(token);
 }
 
 function settingsCookies(res: NextResponse){
-  // Minimal subset exposed to middleware
   res.cookies.set('publicSiteEnabled', SETTINGS.publicSiteEnabled ? '1':'0', { path: '/' });
   res.cookies.set('sessionTimeoutMinutes', String(SETTINGS.sessionTimeoutMinutes), { path: '/' });
   res.cookies.set('rememberMe', SETTINGS.rememberMe ? '1':'0', { path: '/' });

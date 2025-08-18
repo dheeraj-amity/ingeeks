@@ -8,7 +8,7 @@ const recent = new Map<string, number>();
 export async function POST(request: Request){
   try {
     const data = await request.json();
-    const { name, email, message } = data || {};
+    const { name, email, message } = data as { name?: string; email?: string; message?: string };
     if(!name || !email || !message) return NextResponse.json({ error: 'Missing fields'}, { status:400 });
 
     const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'local';
@@ -23,13 +23,14 @@ export async function POST(request: Request){
     await appendMessage(entry);
 
     return NextResponse.json({ ok:true });
-  } catch (e) {
+  } catch {
     return NextResponse.json({ error: 'Server error'}, { status:500 });
   }
 }
 
 export async function GET(request: Request){
-  const token = await getToken({ req: request as any, secret: process.env.AUTH_SECRET });
+  // @ts-expect-error: casting generic Request to satisfy getToken context
+  const token = await getToken({ req: request, secret: process.env.AUTH_SECRET });
   if(!token) return NextResponse.json({ error: 'Unauthorized' }, { status:401 });
   const messages = await readMessages();
   return NextResponse.json({ messages });

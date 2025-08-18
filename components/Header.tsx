@@ -3,10 +3,12 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useSession, signOut } from 'next-auth/react';
 
+interface AdminSession { role?: string }
+
 export function Header(){
   const pathname = usePathname();
   const { data: session } = useSession();
-  const isAdmin = !!(session as any)?.role;
+  const isAdmin = Boolean((session as AdminSession | null)?.role);
 
   // Hide header only on the admin login page
   if (!isAdmin && pathname === '/admin') return null;
