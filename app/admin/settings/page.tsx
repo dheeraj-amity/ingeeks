@@ -41,10 +41,10 @@ export default function AdminSettings(){
       try {
         const res = await fetch('/api/admin/settings');
         if(!res.ok) throw new Error('Failed to load settings');
-        const data = await res.json();
+        const data: SettingsState = await res.json();
         setSettings(data);
-      } catch(e:any){
-        setError(e.message);
+      } catch(err: unknown){
+        setError(err instanceof Error ? err.message : 'Unknown error');
       } finally {
         setLoading(false);
       }
@@ -61,11 +61,11 @@ export default function AdminSettings(){
     try {
       const res = await fetch('/api/admin/settings', { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(settings)});
       if(!res.ok) throw new Error('Save failed');
-      const data = await res.json();
+      const data: SettingsState = await res.json();
       setSettings(data);
       setSavedAt(new Date().toLocaleTimeString());
-    } catch(e:any){
-      setError(e.message);
+    } catch(err: unknown){
+      setError(err instanceof Error ? err.message : 'Unknown error');
     } finally {
       setSaving(false);
     }

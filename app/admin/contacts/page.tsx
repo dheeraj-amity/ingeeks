@@ -32,10 +32,10 @@ export default function AdminContactsPage(){
       setLoading(true);
       const res = await fetch('/api/contact');
       if(!res.ok) throw new Error('Failed to load');
-      const data = await res.json();
+      const data: { messages?: ContactMessage[] } = await res.json();
       setMessages(data.messages || []);
-    } catch(e:any){
-      setError(e.message);
+    } catch(err: unknown){
+      setError(err instanceof Error ? err.message : 'Unknown error');
     } finally {
       setLoading(false);
     }

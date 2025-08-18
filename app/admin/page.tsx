@@ -4,6 +4,8 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 
+interface AdminSession { role?: string }
+
 export default function AdminLoginPage(){
   const params = useSearchParams();
   const router = useRouter();
@@ -13,7 +15,7 @@ export default function AdminLoginPage(){
   const [password,setPassword] = useState('');
   const [error,setError] = useState('');
   const [loading,setLoading] = useState(false);
-  const isAdmin = !!(session as any)?.role;
+  const isAdmin = Boolean((session as AdminSession | null)?.role);
 
   useEffect(()=> {
     if(isAdmin) router.replace('/admin/dashboard');

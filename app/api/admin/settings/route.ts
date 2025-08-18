@@ -14,7 +14,7 @@ let SETTINGS = {
 };
 
 async function ensureAdmin(req: Request){
-  const token = await getToken({ req: req as any, secret: process.env.AUTH_SECRET });
+  const token = await getToken({ req: req as unknown as any, secret: process.env.AUTH_SECRET });
   if(!token) return false;
   return true; // extend role checks if multiple roles
 }

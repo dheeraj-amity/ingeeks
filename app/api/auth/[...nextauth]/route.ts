@@ -3,12 +3,14 @@ import Credentials from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
 import type { NextAuthOptions } from 'next-auth';
 import type { JWT } from 'next-auth/jwt';
+import type { Session } from 'next-auth';
 
-// For demo: store hashed password here or better use env + DB.
-// Hash for Admin@3390 (bcrypt salt 10) generated once.
+interface AdminUser { id: string; name: string; role: 'admin'; }
+interface AdminToken extends JWT { role?: 'admin'; }
+
 const ADMIN_USER = process.env.ADMIN_USERNAME || 'admin';
-const ADMIN_HASH = process.env.ADMIN_PASSWORD_HASH || ''; // optional hashed password
-const ADMIN_PLAIN = process.env.ADMIN_PASSWORD || ''; // optional plain password (NOT recommended for production)
+const ADMIN_HASH = process.env.ADMIN_PASSWORD_HASH || '';
+const ADMIN_PLAIN = process.env.ADMIN_PASSWORD || '';
 
 const authOptions: NextAuthOptions = {
   providers: [
@@ -18,7 +20,7 @@ const authOptions: NextAuthOptions = {
         username: { label: 'Username', type: 'text' },
         password: { label: 'Password', type: 'password' }
       },
-      async authorize(credentials) {
+      async authorize(credentials): Promise<AdminUser | null> {
         if(!credentials) return null;
         const { username, password } = credentials as { username: string; password: string };
         if(username !== ADMIN_USER) return null;
@@ -26,22 +28,24 @@ const authOptions: NextAuthOptions = {
         if(ADMIN_HASH && ADMIN_HASH.startsWith('$2')) {
           ok = await bcrypt.compare(password, ADMIN_HASH);
         } else if(ADMIN_PLAIN) {
-          ok = password === ADMIN_PLAIN; // plain-text fallback
+          ok = password === ADMIN_PLAIN;
         }
         if(!ok) return null;
         return { id: 'admin-1', name: 'Admin', role: 'admin' };
       }
     })
   ],
-  session: { strategy: 'jwt' as const },
+  session: { strategy: 'jwt' },
   pages: { signIn: '/admin' },
   callbacks: {
-    async jwt({ token, user }: { token: JWT; user?: any }) {
-      if(user) (token as any).role = (user as any).role;
-      return token;
+    async jwt({ token, user }) {
+      const t = token as AdminToken;
+      if(user) t.role = (user as AdminUser).role;
+      return t;
     },
-    async session({ session, token }: { session: any; token: JWT }) {
-      (session as any).role = (token as any).role;
+    async session({ session, token }): Promise<Session> {
+      // Augment session with role while keeping original shape
+      (session as Session & { role?: string }).role = (token as AdminToken).role;
       return session;
     }
   },

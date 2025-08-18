@@ -3,7 +3,6 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-interface ContactMessage { id: string; name: string; email: string; message: string; createdAt: string; }
 interface SettingsState { publicSiteEnabled: boolean; enableRateLimit: boolean; rememberMe: boolean; auditLogEnabled: boolean; }
 
 export default function AdminDashboard(){
@@ -23,11 +22,11 @@ export default function AdminDashboard(){
           fetch('/api/admin/settings')
         ]);
         if(contactsRes.ok){
-          const cdata = await contactsRes.json();
+          const cdata: { messages?: unknown[] } = await contactsRes.json();
           setContactsCount((cdata.messages||[]).length);
         }
         if(settingsRes.ok){
-          const sdata = await settingsRes.json();
+          const sdata: SettingsState = await settingsRes.json();
           setSettings(sdata);
         }
       } finally {
