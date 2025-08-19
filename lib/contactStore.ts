@@ -13,6 +13,8 @@ export interface ContactMessageRecord {
   message: string;
   createdAt: string;
   ip: string;
+  status?: 'new' | 'read' | 'archived';
+  userAgent?: string;
 }
 
 const FILE_PATH = path.join(process.cwd(), 'data', 'contactMessages.json');
