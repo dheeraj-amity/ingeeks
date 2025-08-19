@@ -3,6 +3,8 @@ import { getToken } from 'next-auth/jwt';
 import { readMessages } from '@/lib/contactStore';
 import { put } from '@vercel/blob';
 
+const BLOB_ACCESS: 'public' | 'private' = (process.env.CONTACT_BLOB_ACCESS === 'private' ? 'private' : 'public');
+
 // Helper: fetch existing blob via readMessages then find by id (inefficient but acceptable for small volume)
 export async function PATCH(request: Request, { params }: { params: { id: string } }) {
   // @ts-expect-error casting
@@ -18,9 +20,9 @@ export async function PATCH(request: Request, { params }: { params: { id: string
   if(!existing) return NextResponse.json({ error: 'Not found' }, { status:404 });
   const updated = { ...existing, status };
   try {
-    await put(`contacts/${updated.id}.json`, JSON.stringify(updated), { access: 'private', contentType: 'application/json' });
+    await put(`contacts/${updated.id}.json`, JSON.stringify(updated), { access: BLOB_ACCESS, contentType: 'application/json' });
     return NextResponse.json({ ok: true, updated });
-  } catch {
+  } catch (e: unknown){
     return NextResponse.json({ error: 'Update failed' }, { status:500 });
   }
 }

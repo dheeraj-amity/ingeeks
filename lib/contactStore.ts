@@ -19,6 +19,7 @@ export interface ContactMessageRecord {
 
 const FILE_PATH = path.join(process.cwd(), 'data', 'contactMessages.json');
 const USE_BLOB = Boolean(process.env.BLOB_READ_WRITE_TOKEN);
+const BLOB_ACCESS: 'public' | 'private' = (process.env.CONTACT_BLOB_ACCESS === 'private' ? 'private' : 'public');
 
 async function ensureFile(){
   try { await fs.access(FILE_PATH); } catch { await fs.mkdir(path.dirname(FILE_PATH), { recursive: true }); await fs.writeFile(FILE_PATH, JSON.stringify({ messages: [] }, null, 2)); }
@@ -78,7 +79,7 @@ async function blobAppend(msg: ContactMessageRecord){
   if(!mod) throw new Error('BLOB_CLIENT_UNAVAILABLE');
   const { put } = mod;
   try {
-    await put(`contacts/${msg.id}.json`, JSON.stringify(msg), { access: 'private', contentType: 'application/json' });
+    await put(`contacts/${msg.id}.json`, JSON.stringify(msg), { access: BLOB_ACCESS, contentType: 'application/json' });
   } catch (e: unknown) {
     const errMsg = e instanceof Error ? e.message : String(e);
     throw new Error('BLOB_PUT_FAILED:' + errMsg);
