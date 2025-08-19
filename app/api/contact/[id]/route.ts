@@ -22,7 +22,7 @@ export async function PATCH(request: Request, { params }: { params: { id: string
   try {
     await put(`contacts/${updated.id}.json`, JSON.stringify(updated), { access: BLOB_ACCESS, contentType: 'application/json' });
     return NextResponse.json({ ok: true, updated });
-  } catch (e: unknown){
+  } catch {
     return NextResponse.json({ error: 'Update failed' }, { status:500 });
   }
 }
