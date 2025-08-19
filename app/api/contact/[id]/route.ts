@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
-import { readMessages, appendMessage } from '@/lib/contactStore';
+import { readMessages } from '@/lib/contactStore';
 import { put } from '@vercel/blob';
 
 // Helper: fetch existing blob via readMessages then find by id (inefficient but acceptable for small volume)

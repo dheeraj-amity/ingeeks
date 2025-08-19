@@ -63,7 +63,7 @@ export default function AdminContactsPage(){
   }
 
   const filtered = useMemo(()=> filter === 'all' ? messages : messages.filter(m => (m.status||'new') === filter), [messages, filter]);
-  const counts = useMemo(()=> ({
+  const counts = useMemo<Record<'all'|'new'|'read'|'archived', number>>(()=> ({
     all: messages.length,
     new: messages.filter(m => (m.status||'new')==='new').length,
     read: messages.filter(m => m.status==='read').length,
@@ -78,7 +78,7 @@ export default function AdminContactsPage(){
         <h1 className="text-3xl font-bold tracking-tight">Contact Messages</h1>
         <div className="flex items-center gap-2">
           {(['all','new','read','archived'] as const).map(s => (
-            <button key={s} onClick={()=>setFilter(s)} className={`text-xs px-3 py-1.5 rounded border transition ${filter===s ? 'bg-brand-accent text-[#0d1422] border-brand-accent' : 'border-slate-600 hover:border-brand-accent/60 text-slate-300'}`}>{s} ({(counts as any)[s]})</button>
+            <button key={s} onClick={()=>setFilter(s)} className={`text-xs px-3 py-1.5 rounded border transition ${filter===s ? 'bg-brand-accent text-[#0d1422] border-brand-accent' : 'border-slate-600 hover:border-brand-accent/60 text-slate-300'}`}>{s} ({counts[s]})</button>
           ))}
           <button onClick={refresh} disabled={refreshing} className="text-xs px-3 py-2 rounded bg-slate-700 hover:bg-slate-600 disabled:opacity-50">{refreshing ? 'Refreshing...' : 'Refresh'}</button>
         </div>

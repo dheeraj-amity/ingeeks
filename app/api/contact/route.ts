@@ -12,14 +12,14 @@ function validateEmail(email: string){
 export async function POST(request: Request){
   try {
     const data = await request.json();
-    let { name, email, message, honeypot } = data as { name?: string; email?: string; message?: string; honeypot?: string };
+    const { name: rawName, email: rawEmail, message: rawMessage, honeypot } = data as { name?: string; email?: string; message?: string; honeypot?: string };
     if(honeypot){
       return NextResponse.json({ ok: true }); // silently ignore bots
     }
-    if(!name || !email || !message) return NextResponse.json({ error: 'Missing fields'}, { status:400 });
-    name = name.trim();
-    email = email.trim().toLowerCase();
-    message = message.trim();
+    if(!rawName || !rawEmail || !rawMessage) return NextResponse.json({ error: 'Missing fields'}, { status:400 });
+    const name = rawName.trim();
+    const email = rawEmail.trim().toLowerCase();
+    const message = rawMessage.trim();
     if(name.length > 100) return NextResponse.json({ error: 'Name too long'},{ status:400 });
     if(message.length > 1000) return NextResponse.json({ error: 'Message too long'},{ status:400 });
     if(!validateEmail(email)) return NextResponse.json({ error: 'Invalid email'},{ status:400 });
