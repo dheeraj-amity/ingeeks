@@ -22,8 +22,8 @@ export default function AdminDashboard(){
           fetch('/api/admin/settings')
         ]);
         if(contactsRes.ok){
-          const cdata: { messages?: unknown[] } = await contactsRes.json();
-          setContactsCount((cdata.messages||[]).length);
+          const arr = await contactsRes.json();
+          setContactsCount(Array.isArray(arr) ? arr.length : 0);
         }
         if(settingsRes.ok){
           const sdata: SettingsState = await settingsRes.json();
