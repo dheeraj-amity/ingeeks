@@ -75,9 +75,14 @@ async function fetchBlobEntries(blobs: { uploadedAt?: string; url: string; }[]):
 
 async function blobAppend(msg: ContactMessageRecord){
   const mod = await ensureBlobClient();
-  if(!mod) throw new Error('Blob module not available');
+  if(!mod) throw new Error('BLOB_CLIENT_UNAVAILABLE');
   const { put } = mod;
-  await put(`contacts/${msg.id}.json`, JSON.stringify(msg), { access: 'private', contentType: 'application/json' });
+  try {
+    await put(`contacts/${msg.id}.json`, JSON.stringify(msg), { access: 'private', contentType: 'application/json' });
+  } catch (e: unknown) {
+    const errMsg = e instanceof Error ? e.message : String(e);
+    throw new Error('BLOB_PUT_FAILED:' + errMsg);
+  }
 }
 
 // PUBLIC API (auto selects storage backend)
@@ -86,7 +91,16 @@ export async function readMessages(): Promise<ContactMessageRecord[]> {
 }
 
 export async function appendMessage(msg: ContactMessageRecord){
-  return USE_BLOB ? blobAppend(msg) : fsAppend(msg);
+  if(USE_BLOB){
+    try { return await blobAppend(msg); } catch (e){
+      // Fallback to filesystem in dev if blob fails
+      if(process.env.NODE_ENV !== 'production'){
+        try { return await fsAppend(msg); } catch {/* ignore */}
+      }
+      throw e;
+    }
+  }
+  return fsAppend(msg);
 }
 
 // One-time migration helper. Called automatically but also exported for manual triggering.

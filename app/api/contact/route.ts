@@ -34,7 +34,21 @@ export async function POST(request: Request){
     recent.set(ip, now);
 
     const entry = { id: crypto.randomUUID(), name, email, message, createdAt: new Date().toISOString(), ip, userAgent: ua, status: 'new' as const };
-    await appendMessage(entry);
+    try {
+      await appendMessage(entry);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      if(msg.includes('BLOB_CLIENT_UNAVAILABLE')){
+        return NextResponse.json({ error: 'Blob client unavailable. Ensure @vercel/blob installed.' }, { status:500 });
+      }
+      if(msg.startsWith('BLOB_PUT_FAILED:')){
+        return NextResponse.json({ error: msg.replace('BLOB_PUT_FAILED:','Blob write failed: ') }, { status:500 });
+      }
+      if(msg.includes('EROFS') || msg.toLowerCase().includes('read-only')){
+        return NextResponse.json({ error: 'Storage not writable. Set BLOB_READ_WRITE_TOKEN or use writable env.' }, { status:500 });
+      }
+      return NextResponse.json({ error: 'Persist failed' }, { status:500 });
+    }
 
     return NextResponse.json({ ok:true, id: entry.id });
   } catch {

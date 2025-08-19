@@ -20,7 +20,12 @@ export function ContactForm(){
     setMessage('');
     try{
       const res = await fetch('/api/contact', { method:'POST', headers:{ 'Content-Type':'application/json'}, body: JSON.stringify(payload)});
-      if(!res.ok) throw new Error('Failed');
+      const data = await res.json().catch(()=>({}));
+      if(!res.ok){
+        setStatus('error');
+        setMessage(data.error || 'Something went wrong. Try again.');
+        return;
+      }
       setStatus('success');
       form.reset();
     }catch{
