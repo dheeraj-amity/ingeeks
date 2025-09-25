@@ -12,14 +12,8 @@ export async function middleware(req: NextRequest){
 
   const token = await getToken({ req, secret: process.env.AUTH_SECRET });
 
-  // If visiting /admin (login page) while already authenticated -> redirect to dashboard
+  // If visiting /admin (login page) while already authenticated -> do not redirect, separate portal
   if(pathname === '/admin'){
-    if(token){
-      const url = req.nextUrl.clone();
-      url.pathname = '/admin/dashboard';
-      return NextResponse.redirect(url);
-    }
-    // Not logged in -> allow to see login page (no redirect of public users)
     const res = NextResponse.next();
     if((req.headers.get('accept')||'').includes('text/html')) res.headers.set('Cache-Control','no-store, must-revalidate');
     return res;

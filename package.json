@@ -16,6 +16,7 @@
     "bcryptjs": "^3.0.2",
     "framer-motion": "^10.18.0",
     "lottie-react": "^2.4.0",
+    "motion": "^12.23.12",
     "next": "^14.2.5",
     "next-auth": "^4.24.7",
     "react": "^18.2.0",
