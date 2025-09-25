@@ -9,8 +9,8 @@ export default function ContactPage(){
           <p>Have an idea, product or challenge? Let’s build something impactful.</p>
           <ul className="space-y-2">
             <li><strong className="text-white">📍</strong> Lucknow, Uttar Pradesh, India</li>
-            <li><strong className="text-white">📧</strong> <a className="text-brand-accent" href="mailto:dheeraj@ingeeks.in">dheeraj@ingeeks.in</a></li>
-            <li><strong className="text-white">📞</strong> +91 88744 43390</li>
+            <li><strong className="text-white">📧</strong> <a className="text-brand-accent" href="mailto:info@ingeeks.in">info@ingeeks.in</a></li>
+            <li><strong className="text-white">📞</strong> +91 93354 25542</li>
           </ul>
         </div>
         <ContactForm />
