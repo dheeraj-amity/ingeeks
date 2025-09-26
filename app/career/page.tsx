@@ -51,6 +51,40 @@ const jobPositions: JobPosition[] = [
     postedDate: '2024-09-25'
   },
   {
+    id: 'cloud-dev-intern-lucknow',
+    title: 'Cloud Developer Intern',
+    type: 'Internship',
+    duration: '6 months',
+    location: 'Lucknow, Uttar Pradesh',
+    department: 'Cloud Engineering',
+    status: 'open',
+    description: 'Join our cloud engineering team in Lucknow and gain hands-on experience with modern cloud platforms, DevOps practices, and scalable application development.',
+    requirements: [
+      'Currently pursuing or recently completed degree in Computer Science, IT, or related field',
+      'Basic understanding of cloud platforms (AWS, Azure, or GCP)',
+      'Familiarity with programming languages like Python, JavaScript, or Java',
+      'Knowledge of version control systems (Git)',
+      'Eager to learn and adapt to new technologies',
+      'Strong communication and problem-solving skills'
+    ],
+    responsibilities: [
+      'Assist in developing and deploying cloud-based applications',
+      'Help with infrastructure automation and monitoring',
+      'Support CI/CD pipeline development',
+      'Collaborate with senior developers on cloud architecture',
+      'Document processes and create technical guides',
+      'Participate in code reviews and team meetings'
+    ],
+    benefits: [
+      'Mentorship from experienced cloud engineers',
+      'Hands-on experience with enterprise cloud platforms',
+      'Certificate of completion',
+      'Potential for full-time offer based on performance',
+      'Flexible working hours'
+    ],
+    postedDate: '2024-09-26'
+  },
+  {
     id: 'fullstack-dev',
     title: 'Full Stack Developer',
     type: 'Full-time',
@@ -291,9 +325,9 @@ export default function CareerPage() {
 
       {/* Call to Action */}
       <section className="text-center space-y-6 py-12">
-        <h2 className="font-heading text-2xl font-bold">Don't See the Right Fit?</h2>
+        <h2 className="font-heading text-2xl font-bold">Don&apos;t See the Right Fit?</h2>
         <p className="text-slate-400 max-w-2xl mx-auto">
-          We're always looking for talented individuals. Send us your resume and tell us how you'd like to contribute to our mission.
+          We&apos;re always looking for talented individuals. Send us your resume and tell us how you&apos;d like to contribute to our mission.
         </p>
         <a 
           href="/contact" 
