@@ -13,9 +13,9 @@ export function SocialIcons(){
     })();
   },[]);
   const items = [
-    { href:'https://github.com/dheeraj-amity', label:'GitHub', lottie:'https://assets2.lottiefiles.com/packages/lf20_j1adxtyb.json' },
-    { href:'https://www.linkedin.com/in/mr-dheerajmaurya/', label:'LinkedIn', lottie:'https://assets2.lottiefiles.com/packages/lf20_0Cm1Y2.json' },
-    { href:'mailto:dheeraj@ingeeks.in', label:'Email', lottie:'https://assets2.lottiefiles.com/packages/lf20_tpa51dr0.json' },
+    { href:'https://github.com/ingeeks-technologies', label:'GitHub', lottie:'https://assets2.lottiefiles.com/packages/lf20_j1adxtyb.json' },
+    { href:'https://linkedin.com/company/ingeeks-technologies', label:'LinkedIn', lottie:'https://assets2.lottiefiles.com/packages/lf20_0Cm1Y2.json' },
+    { href:'mailto:info@ingeeks.in', label:'Email', lottie:'https://assets2.lottiefiles.com/packages/lf20_tpa51dr0.json' },
   ];
   return (
     <div className="flex justify-center gap-6">
