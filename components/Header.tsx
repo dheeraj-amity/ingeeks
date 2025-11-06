@@ -15,8 +15,7 @@ export function Header(){
     if(open){ document.body.style.overflow = 'hidden'; } else { document.body.style.overflow = ''; }
   }, [open]);
 
-  // Hide header on admin paths
-  if(pathname.startsWith('/admin')) return null;
+
 
   const links = [
     { href: '/', label: 'Home' },
@@ -55,4 +54,4 @@ export function Header(){
   );
 }
 
-// NOTE: This header is purely public. Admin UI has its own layout. Logging in/out will not change this header.
+

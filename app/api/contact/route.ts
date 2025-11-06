@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getToken } from 'next-auth/jwt';
+
 import { appendMessage, readMessages } from '@/lib/contactStore';
 
 // Simple in-memory rate limit placeholder (still memory-based)
@@ -56,17 +56,4 @@ export async function POST(request: Request){
   }
 }
 
-export async function GET(request: Request){
-  // @ts-expect-error: casting generic Request to satisfy getToken context
-  const token = await getToken({ req: request, secret: process.env.AUTH_SECRET });
-  if(!token) return NextResponse.json({ error: 'Unauthorized' }, { status:401 });
-  const url = new URL(request.url);
-  const statusFilter = url.searchParams.get('status');
-  let messages = await readMessages();
-  if(statusFilter){
-    messages = messages.filter(m => m.status === statusFilter);
-  }
-  // Sort newest first just in case store didn't
-  messages.sort((a,b)=> new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-  return NextResponse.json(messages);
-}
+// GET method removed - was admin-only functionality
