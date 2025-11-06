@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { appendMessage, readMessages } from '@/lib/contactStore';
+import { appendMessage } from '@/lib/contactStore';
 
 // Simple in-memory rate limit placeholder (still memory-based)
 const recent = new Map<string, number>();
